@@ -5,6 +5,7 @@ attributes/methods for other classes in the package
 """
 import uuid
 from datetime import datetime
+from copy import deepcopy
 
 class BaseModel:
     """
@@ -17,13 +18,20 @@ class BaseModel:
 
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """
         Initialization of an instance
         """
-        self.created_at = datetime.now()
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == 'created_at' or key == 'updated_at':
+                    value = datetime.fromisoformat(value)
+                if key != '__class__':
+                    setattr(self, key, value)
+        else:
+            self.created_at = datetime.now()
+            self.id = str(uuid.uuid4())
         self.updated_at = datetime.now()
-        self.id = str(uuid.uuid4())
 
     def __str__(self):
         """
@@ -41,8 +49,8 @@ class BaseModel:
     def to_dict(self):
         """
         Returns a dictionary containing all keys/values of __dict__ of the instance"""
-        inst_dict = self.__dict__
+        inst_dict = deepcopy(self.__dict__)
         inst_dict['__class__'] = self.__class__.__name__
-        inst_dict['created_at'] = self.created_at.isoformat()
-        inst_dict['updated_at'] = self.updated_at.isoformat()
+        inst_dict['created_at'] = datetime.isoformat(self.created_at)
+        inst_dict['updated_at'] = datetime.isoformat(self.updated_at)
         return inst_dict

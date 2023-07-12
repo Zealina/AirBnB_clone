@@ -4,6 +4,7 @@ This module contains 'FileStorage' class that serializes and deserializes JSON f
 """
 
 import json
+from models.base_model import BaseModel
 
 class FileStorage:
     """
@@ -14,12 +15,8 @@ class FileStorage:
     """
     __file_path = "file.json"
     __objects = {}
+    class_dict = {"BaseModel": BaseModel}
 
-    def __init__(self):
-        """
-        Initializes an instance of 'FileStorage'
-        """
-        pass
 
     def all(self):
         """
@@ -32,14 +29,19 @@ class FileStorage:
         sets in '__objects' the obj with key <obj class name>.id
         """
         key = obj.__class__.__name__ + '.' + obj.id
-        FileStorage.__objects[key] = obj.to_dict()
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """
         Serializes __objects to the JSON file (path: __file_path)
         """
+        tbd = {}
+        for key in FileStorage.__objects.keys():
+            obj = FileStorage.__objects[key]
+            obj = obj.to_dict()
+            tbd[key] = obj
         with open(FileStorage.__file_path, 'w', encoding='utf-8') as f:
-            json.dump(FileStorage.__objects, f)
+            json.dump(tbd, f)
 
     def reload(self):
         """
@@ -47,6 +49,9 @@ class FileStorage:
         """
         try:
             with open(FileStorage.__file_path, 'r', encoding='utf-8') as f:
-                FileStorage.__objects = json.load(f)
+                data = json.load(f)
+            for key, value in data.items():
+                inst = self.class_dict[value['__class__']](**value)
+                FileStorage.__objects[key] = inst
         except (FileNotFoundError, json.decoder.JSONDecodeError):
             pass

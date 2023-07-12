@@ -3,6 +3,8 @@
 This module contains 'FileStorage' class that serializes and deserializes JSON file to instances
 """
 
+import json
+
 class FileStorage:
     """
     This class serializes instances to a json file and deserializes json file to
@@ -30,13 +32,13 @@ class FileStorage:
         sets in '__objects' the obj with key <obj class name>.id
         """
         key = obj.__class__.__name__ + '.' + obj.id
-        FileStorage.__objects[key] = obj
+        FileStorage.__objects[key] = obj.to_dict()
 
     def save(self):
         """
         Serializes __objects to the JSON file (path: __file_path)
         """
-        with open(FileStorage.__file_path, 'r+', encoding='utf-8') as f:
+        with open(FileStorage.__file_path, 'a+', encoding='utf-8') as f:
             json.dump(FileStorage.__objects, f)
 
     def reload(self):
@@ -46,5 +48,5 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path, 'r', encoding='utf-8') as f:
                 FileStorage.__objects = json.load(f)
-        except FileNotFoundError:
+        except (FileNotFoundError, json.decoder.JSONDecodeError):
             pass

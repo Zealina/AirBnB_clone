@@ -6,7 +6,7 @@ attributes/methods for other classes in the package
 import uuid
 from datetime import datetime
 from copy import deepcopy
-from __init__ import storage
+from models import storage
 
 class BaseModel:
     """

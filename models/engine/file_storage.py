@@ -3,8 +3,6 @@
 This module contains 'FileStorage' class that serializes and deserializes JSON file to instances
 """
 
-from models.base_model import BaseModel
-
 class FileStorage:
     """
     This class serializes instances to a json file and deserializes json file to

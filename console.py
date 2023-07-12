@@ -7,10 +7,18 @@ from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
     """
-    Class Defining methods for thr command interpreter
+    Defines the methods for the command interpreter
     """
     prompt = "(hbnb) "
-
+    __classes = {
+        "BaseModel",
+        "User",
+        "State",
+        "Place",
+        "City",
+        "Review",
+        "Amenity"
+        }
     def do_create(self, arg):
         """
         Creates a new instance of BaseModel

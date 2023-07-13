@@ -68,10 +68,17 @@ class HBNBCommand(cmd.Cmd):
         Prints string representation of all instances of all classes
         """
         all_inst = storage.all()
+        instances = []
         if arg and arg not in self.__classes:
             print("** class doesn't exist **")
+            return
+        elif arg and arg in self.__classes:
+            for inst in all_inst:
+                if inst.__class.__name__ == arg:
+                    instances.append(str(inst))
         else:
-            print([str(inst) for inst in all_inst.values()])
+            instances = [str(inst) for inst in all_inst.values()]
+        print(instances)
 
     def do_update(self, arg):
         """
@@ -118,6 +125,17 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             return arg
+
+    def default(self, line):
+        """
+        Add customizations to the default command
+        """
+        for key in self.__classes.keys():
+            if (key + '.all()') == line:
+                self.do_all(key)
+            elif (key + '.count()') == line:
+                print(len(self.do_all(key)))
+
 
     def do_EOF(self, arg):
         """

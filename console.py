@@ -5,13 +5,14 @@ Entry Point into the command interpreter
 import cmd
 from models.base_model import BaseModel
 from models import storage
+from models.user import User
 
 class HBNBCommand(cmd.Cmd):
     """
     Defines the methods for the command interpreter
     """
     prompt = "(hbnb) "
-    __classes = {"BaseModel": BaseModel}
+    __classes = {"BaseModel": BaseModel, "User": User}
     def do_create(self, arg):
         """
         Creates a new instance of BaseModel

@@ -5,6 +5,7 @@ This module contains 'FileStorage' class that serializes and deserializes JSON f
 
 import json
 from models.base_model import BaseModel
+from models.user import User
 
 class FileStorage:
     """
@@ -15,7 +16,7 @@ class FileStorage:
     """
     __file_path = "file.json"
     __objects = {}
-    class_dict = {"BaseModel": BaseModel}
+    class_dict = {"BaseModel": BaseModel, "User": User}
 
 
     def all(self):

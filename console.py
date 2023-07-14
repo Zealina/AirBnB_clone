@@ -2,6 +2,7 @@
 """
 Entry Point into the command interpreter
 """
+import re
 import cmd
 from models.base_model import BaseModel
 from models import storage
@@ -74,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
         elif arg and arg in self.__classes:
             instances = [str(inst) for inst in all_inst.values() if inst.__class__.__name__ == arg]
         else:
-            instances = [str(inst) for inst in all_inst.values()]
+            instances = [inst.__str__() for inst in all_inst.values()]
         print(instances)
 
     def do_update(self, arg):
@@ -127,20 +128,49 @@ class HBNBCommand(cmd.Cmd):
         """
         Add customizations to the default command
         """
-        all_inst = storage.all()
-        for key in self.__classes.keys():
-            if (key + '.all()') == line:
-                self.do_all(key)
-                return
-            elif (key + '.count()') == line:
-                count = 0
-                for inst in all_inst.values():
-                    if inst.__class__.__name__ == key:
-                        count += 1
-                print(count)
-                return
-        print(f"** Unknown command: {line} **")
+        pattern = r"^([a-zA-Z]+).([a-z]+)\(([\w-]+)?\)$"
+        match = re.findall(pattern, line)
+        if match != [] and match[0][0] in self.__classes:
+            a = match[0]
+            if a[1] == 'all' and not a[2]:
+                self.all(match[0][0])
+            elif a[1] == 'count' and not a[2]:
+                self.count(match[0][0])
+            elif a[1] == 'show':
+                self.do_show(a[0] + ' ' + a[2])
+            elif a[1] == 'destroy':
+                self.do_destroy(a[0] + ' ' + a[2])
+            elif a[1] == 'update':
+                pass
+        else:
+            print("** Unknown command: ", line)
 
+    def all(self, cls_name):
+        """
+        Retrieves all instances of cls_name
+        """
+        all_inst = storage.all()
+        i = 0
+        print("[", end='')
+        for inst in all_inst.values():
+            if inst.__class__.__name__ == cls_name:
+                if i == 0:
+                    print(inst, end='')
+                    i += 1
+                else:
+                    print(inst, end=', ')
+        print("]")
+
+    def count(self, cls_name):
+        """
+        Count number of instances of a class
+        """
+        count = 0
+        all_inst = storage.all()
+        for inst in all_inst.values():
+            if inst.__class__.__name__ == cls_name:
+                count += 1
+        print(count)
 
     def do_EOF(self, arg):
         """

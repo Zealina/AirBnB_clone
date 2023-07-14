@@ -3,6 +3,7 @@
 Entry Point into the command interpreter
 """
 import re
+import ast
 import cmd
 from models.base_model import BaseModel
 from models import storage
@@ -90,21 +91,25 @@ class HBNBCommand(cmd.Cmd):
         key = arg[0] + '.' + arg[1]
         if key not in all_inst:
             print("** no instance found **")
+            return
         elif len(arg) < 3:
             print("** attribute name missing **")
+            return
         elif len(arg) < 4:
             print("** value missing **")
+            return
         else:
             data_types = [int, float, str]
             for d_type in data_types:
                 try:
                     if d_type is str:
-                        arg[3] = arg[3][1:-1]
+                        arg[3] = arg[3].strip('"')
                     value = d_type(arg[3])
                     all_inst[key].__setattr__(arg[2], value)
                     break
                 except ValueError:
                     continue
+        storage.save()
 
 
     def emptyline(self):
@@ -128,21 +133,40 @@ class HBNBCommand(cmd.Cmd):
         """
         Add customizations to the default command
         """
-        pattern = r"^([a-zA-Z]+).([a-z]+)\(([\w-]+)?\)$"
+        pattern = r"^([a-zA-Z]+)\.([a-z]+)\((?:\"([\w-]+)\"(?:,\s+(.+?,\s+.+?|\{.+?\})?)?)?\)$"
         match = re.findall(pattern, line)
         if match != [] and match[0][0] in self.__classes:
-            a = match[0]
-            if a[1] == 'all' and not a[2]:
-                self.all(match[0][0])
-            elif a[1] == 'count' and not a[2]:
-                self.count(match[0][0])
-            elif a[1] == 'show':
-                self.do_show(a[0] + ' ' + a[2])
-            elif a[1] == 'destroy':
-                self.do_destroy(a[0] + ' ' + a[2])
-            elif a[1] == 'update':
-                arg = a[2].split()
-                print(arg)
+            cls = match[0][0]
+            method = match[0][1]
+            user_id = match[0][2]
+            data_str = match[0][3]
+            if method == 'all' and (user_id == '' and data_str == ''):
+                self.all(cls)
+            elif method == 'count' and (user_id == '' and data_str == ''):
+                self.count(cls)
+            elif method == 'show' and data_str == '':
+                self.do_show(cls + ' ' + user_id)
+            elif method == 'destroy' and data_str == '':
+                self.do_destroy(cls + ' ' + user_id)
+            elif method == 'update':
+                if data_str[0] != '{':
+                    data_str = '(' + data_str + ')'
+                try:
+                    data_str = ast.literal_eval(data_str)
+                    if type(data_str) is dict:
+                        for key, value in data_str.items():
+                            self.do_update(' '.join([cls, user_id, str(key), str(value)]))
+                    elif type(data_str) is tuple:
+                        self.do_update(' '.join([cls, user_id, str(data_str[0]), str(data_str[1])]))
+                    else:
+                        print("** Unknown command: ", line)
+                        return
+                except (SyntaxError, ValueError):
+                    print("** Unknown command: ", line)
+                    return
+            else:
+                print("** Unknown command: ", line)
+                return
         else:
             print("** Unknown command: ", line)
 

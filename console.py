@@ -141,7 +141,8 @@ class HBNBCommand(cmd.Cmd):
             elif a[1] == 'destroy':
                 self.do_destroy(a[0] + ' ' + a[2])
             elif a[1] == 'update':
-                pass
+                arg = a[2].split()
+                print(arg)
         else:
             print("** Unknown command: ", line)
 

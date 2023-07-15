@@ -5,6 +5,7 @@ Entry Point into the command interpreter
 import re
 import ast
 import cmd
+import sys
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -12,6 +13,7 @@ from models.state import State
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -23,6 +25,7 @@ class HBNBCommand(cmd.Cmd):
             "State": State, "Amenity": Amenity,
             "Place": Place, "Review": Review
     }
+
     def do_create(self, arg):
         """
         Creates a new instance of BaseModel
@@ -64,7 +67,7 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
         except KeyError:
             print("** no instance found **")
-    
+
     def do_all(self, arg):
         """
         Prints string representation of all instances of all classes
@@ -74,14 +77,15 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         elif arg and arg in self.__classes:
-            instances = [str(inst) for inst in all_inst.values() if inst.__class__.__name__ == arg]
+            instances = [str(inst) for inst in all_inst.values()
+                         if inst.__class__.__name__ == arg]
         else:
             instances = [inst.__str__() for inst in all_inst.values()]
         print(instances)
 
     def do_update(self, arg):
         """
-        Updates an instance based on the class name and id by adding or 
+        Updates an instance based on the class name and id by adding or
         updating attribute
         """
         arg = self.parser(arg)
@@ -111,7 +115,6 @@ class HBNBCommand(cmd.Cmd):
                     continue
         storage.save()
 
-
     def emptyline(self):
         """Called when an emptyline is entered
         """
@@ -133,7 +136,8 @@ class HBNBCommand(cmd.Cmd):
         """
         Add customizations to the default command
         """
-        pattern = r"^([a-zA-Z]+)\.([a-z]+)\((?:\"([\w-]+)\"(?:,\s+(.+?,\s+.+?|\{.+?\})?)?)?\)$"
+        pattern = r"^([a-zA-Z]+)\.([a-z]+)" \
+            r"\((?:\"([\w-]+)\"(?:,\s+(.+?,\s+.+?|\{.+?\})?)?)?\)$"
         match = re.findall(pattern, line)
         if match != [] and match[0][0] in self.__classes:
             cls = match[0][0]
@@ -155,9 +159,12 @@ class HBNBCommand(cmd.Cmd):
                     data_str = ast.literal_eval(data_str)
                     if type(data_str) is dict:
                         for key, value in data_str.items():
-                            self.do_update(' '.join([cls, user_id, str(key), str(value)]))
+                            self.do_update(' '.join([cls, user_id,
+                                                     str(key), str(value)]))
                     elif type(data_str) is tuple:
-                        self.do_update(' '.join([cls, user_id, str(data_str[0]), str(data_str[1])]))
+                        self.do_update(' '.join([cls, user_id,
+                                                str(data_str[0]),
+                                                str(data_str[1])]))
                     else:
                         print("** Unknown command: ", line)
                         return
@@ -213,9 +220,9 @@ class HBNBCommand(cmd.Cmd):
         """
         print("")
 
+
 if __name__ == '__main__':
-     import sys
-     if len(sys.argv) > 1:
-         HBNBCommand().onecmd(' '.join(sys.argv[1:]))
-     else:
-         HBNBCommand().cmdloop()
+    if len(sys.argv) > 1:
+        HBNBCommand().onecmd(' '.join(sys.argv[1:]))
+    else:
+        HBNBCommand().cmdloop()

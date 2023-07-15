@@ -5,6 +5,7 @@ This Module contains the class 'Place
 
 from models.base_model import BaseModel
 
+
 class Place(BaseModel):
     """
     Contains the class attributes for 'Place'

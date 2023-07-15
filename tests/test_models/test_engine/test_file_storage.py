@@ -50,7 +50,8 @@ class TestFileStorage(TestCase):
         self.f_storage.new(self.b_model)
         f_storage_keys = self.f_storage.all().keys()
         self.assertIn(
-            f'{self.b_model.__class__.__name__}.{self.b_model.id}', f_storage_keys)
+            f'{self.b_model.__class__.__name__}.{self.b_model.id}',
+            f_storage_keys)
 
     def test_method_save(self):
         """Test a method named save

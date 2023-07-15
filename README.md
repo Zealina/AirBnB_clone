@@ -36,11 +36,10 @@ Python 3.x
 - Clone the repo
 - $ git clone https://github.com/Zealina/AirBnB_clone 
 - cd to dir
-- run chmod u+x console.py to make the file executable
 - run ./console.py eg: /AirBnB_clone$ ./console.py
 Description
 
-This project is a copy of the AirBnB Website Implementing the fundamentals
+This project is a clone of the AirBnB Website Implementing the fundamentals
 of higher level programming
 
 How to Start it:

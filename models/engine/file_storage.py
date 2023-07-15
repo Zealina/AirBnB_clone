@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-This module contains 'FileStorage' class that serializes and deserializes JSON file to instances
+This module contains 'FileStorage' class that serializes and deserializes
+JSON file to instances
 """
 
 import json
@@ -11,10 +12,11 @@ from models.amenity import Amenity
 from models.review import Review
 from models.place import Place
 
+
 class FileStorage:
     """
-    This class serializes instances to a json file and deserializes json file to
-    instances. 'FileStorage' has the following class attributes:
+    This class serializes instances to a json file and deserializes json
+    file to instances. 'FileStorage' has the following class attributes:
         __file_path (str): path to the JSON file
         __objects (dict): ditionary containing objects
     """
@@ -25,6 +27,7 @@ class FileStorage:
             "State": State, "Amenity": Amenity,
             "Review": Review, "Place": Place
     }
+
     def all(self):
         """
         Returns the dictionary __objects

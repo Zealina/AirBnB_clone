@@ -76,3 +76,7 @@ class TestBaseModel(TestCase):
         content = b_model.to_dict()
         b_model2 = BaseModel(**content)
         self.assertIsNot(b_model, b_model2)
+
+
+if __name__ == "__main__":
+    unittest.main()

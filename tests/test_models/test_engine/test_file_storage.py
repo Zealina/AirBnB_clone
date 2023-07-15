@@ -16,19 +16,19 @@ class TestFileStorage(TestCase):
     """A class that contains test cases for the FileStorage class"""
 
     def setUp(self):
-        """set up the test environment before each test is run"""
-        dict_key = []
-        for key in storage._FileStorage__objects.keys():
-            dict_key.append(key)
-        for key in dict_key:
-            del storage._FileStorage__objects[key]
+        """Sets up test methods."""
+        pass
+
+    def resetStorage(self):
+        """Resets the data in FileStorage"""
+        FileStorage._FileStorage__objects = {}
+        if os.path.isfile(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
 
     def tearDown(self):
-        """Clears storage file after tests end"""
-        try:
-            os.remove('file.json')
-        except:
-            pass
+        """Tears down the methods"""
+        self.resetStorage()
+        pass
 
     def test_raise_private_attr_err(self):
         """Test for attribute error if private attributesis being accessed"""
@@ -45,7 +45,7 @@ class TestFileStorage(TestCase):
         self.assertEqual(type(f_storage.all()), dict)
 
     def test_method_new(self):
-        """Test a method named new 
+        """Test a method named new
         """
         b_model = BaseModel()
         f_storage = FileStorage()

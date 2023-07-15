@@ -7,16 +7,12 @@ import uuid
 from datetime import datetime
 import models
 
+
 class BaseModel:
-    """
-    The 'BaseModel' class contains all common attributes for other classess
-    the attributes are:
-
-        id (str): A unique id for every instance of 'BaseModel'
-        created_at (datetime.datetime): The time of creation of instance
-        updated_at (datetime.datetime): Last update
-
-    """
+    """The 'BaseModel' class contains all common attributes for other classess
+    the attributes are:id (str): A unique id for every instance of 'BaseModel'
+    created_at (datetime.datetime):The time of creation of instance updated_at
+    (datetime.datetime): Last update"""
 
     def __init__(self, *args, **kwargs):
         """
@@ -43,14 +39,16 @@ class BaseModel:
 
     def save(self):
         """
-        Updates the public instance attribute "updated_at" with the current datetime
+        Updates the public instance attribute "updated_at"
+        with the current datetime
         """
         self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
         """
-        Returns a dictionary containing all keys/values of __dict__ of the instance"""
+        Returns a dictionary containing all keys/values of
+        __dict__ of the instance"""
         inst_dict = self.__dict__.copy()
         inst_dict['__class__'] = self.__class__.__name__
         inst_dict['created_at'] = datetime.isoformat(self.created_at)

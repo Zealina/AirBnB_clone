@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Unittest module for the User Class.
 """
+import unittest
 from models.user import User
 from unittest import TestCase
 
@@ -32,3 +33,7 @@ class TestUser(TestCase):
         """
         user = User()
         self.assertIsInstance(user.last_name, str)
+
+
+if __name__ == "__main__":
+    unittest.main()

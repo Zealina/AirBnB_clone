@@ -32,38 +32,39 @@ class TestFileStorage(TestCase):
 
     def test_raise_private_attr_err(self):
         """Test for attribute error if private attributesis being accessed"""
-        file_storage = FileStorage()
+        f_storage = FileStorage()
         with self.assertRaises(AttributeError):
-            file_storage.__file_path
+            f_storage.__file_path
         with self.assertRaises(AttributeError):
-            file_storage.__object
+            f_storage.__object
 
     def test_methods_all(self):
         """Test a method named all for right return type
         """
-        fs = FileStorage()
-        self.assertEqual(type(fs.all()), dict)
+        f_storage = FileStorage()
+        self.assertEqual(type(f_storage.all()), dict)
 
     def test_method_new(self):
         """Test a method named new 
         """
-        b = BaseModel()
-        fs = FileStorage()
-        fs.new(b)
-        fs_keys = fs.all().keys()
-        self.assertIn(f'{b.__class__.__name__}.{b.id}', fs_keys)
+        b_model = BaseModel()
+        f_storage = FileStorage()
+        f_storage.new(b_model)
+        f_storage_keys = f_storage.all().keys()
+        self.assertIn(
+            f'{b_model.__class__.__name__}.{b_model.id}', f_storage_keys)
 
     def test_method_save(self):
         """Test a method named save
         """
-        fs = FileStorage()
-        fs.save()
+        f_storage = FileStorage()
+        f_storage.save()
 
     def test_method_reload(self):
         """Test a method named reload
         """
-        fs = FileStorage()
-        fs.reload()
+        f_storage = FileStorage()
+        f_storage.reload()
 
 
 if __name__ == '__main__':

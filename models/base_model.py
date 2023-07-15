@@ -7,6 +7,7 @@ import uuid
 from datetime import datetime
 import models
 
+
 class BaseModel:
     """The 'BaseModel' class contains all common attributes for other classess
     the attributes are:id (str): A unique id for every instance of 'BaseModel'
@@ -17,7 +18,7 @@ class BaseModel:
         """
         Initialization of an instance
         """
-        if kwargs:
+        if len(kwargs) != 0:
             for key, value in kwargs.items():
                 if key == 'created_at' or key == 'updated_at':
                     value = datetime.fromisoformat(value)
@@ -47,7 +48,7 @@ class BaseModel:
     def to_dict(self):
         """Returns a dictionary containing all keys/values of
         __dict__ of the instance"""
-        
+
         inst_dict = self.__dict__.copy()
         inst_dict['__class__'] = self.__class__.__name__
         inst_dict['created_at'] = datetime.isoformat(self.created_at)

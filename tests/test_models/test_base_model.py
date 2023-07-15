@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Test cases for BaseModel 
+"""Unittest module for the BaseModel Class.
 """
 
 import unittest

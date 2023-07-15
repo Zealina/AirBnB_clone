@@ -207,5 +207,15 @@ class HBNBCommand(cmd.Cmd):
         """Exits the console"""
         return True
 
+    def postloop(self):
+        """
+        Runs after the console loop is over
+        """
+        print("")
+
 if __name__ == '__main__':
-    HBNBCommand().cmdloop()
+     import sys
+     if len(sys.argv) > 1:
+         HBNBCommand().onecmd(' '.join(sys.argv[1:]))
+     else:
+         HBNBCommand().cmdloop()

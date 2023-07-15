@@ -10,29 +10,28 @@ class TestUser(TestCase):
     """Test cases for the User class
     """
 
+    def setUp(self):
+        self.user = User()
+
     def test_class_attr_email(self):
         """Test the correct instance for the class attribute ``email``
         """
-        user = User()
-        self.assertIsInstance(user.email, str)
+        self.assertIsInstance(self.user.email, str)
 
     def test_class_attr_password(self):
         """Test the correct instance for the class attribute ``password``
         """
-        user = User()
-        self.assertIsInstance(user.password, str)
+        self.assertIsInstance(self.user.password, str)
 
     def test_class_attr_first_name(self):
         """Test the correct instance for the class attribute ``first_name``
         """
-        user = User()
-        self.assertIsInstance(user.first_name, str)
+        self.assertIsInstance(self.user.first_name, str)
 
     def test_class_attr_last_name(self):
         """Test the correct instance for the class attribute``last_name``
         """
-        user = User()
-        self.assertIsInstance(user.last_name, str)
+        self.assertIsInstance(self.user.last_name, str)
 
 
 if __name__ == "__main__":

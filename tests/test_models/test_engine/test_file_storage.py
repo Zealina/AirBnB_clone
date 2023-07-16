@@ -42,7 +42,6 @@ class TestFileStorage_instantiation(unittest.TestCase):
 
 class TestFileStorage_methods(unittest.TestCase):
     """Unittests for testing methods of the FileStorage class."""
-
     @classmethod
     def setUp(self):
         try:
@@ -158,7 +157,7 @@ class TestFileStorage_methods(unittest.TestCase):
                 self.assertEqual(line, "{}")
         self.assertIs(a_storage.reload(), None)
 
-    """def test_reload(self):
+    def test_reload(self):
         bm = BaseModel()
         us = User()
         st = State()
@@ -182,7 +181,7 @@ class TestFileStorage_methods(unittest.TestCase):
         self.assertIn("Place." + pl.id, objs)
         self.assertIn("City." + cy.id, objs)
         self.assertIn("Amenity." + am.id, objs)
-        self.assertIn("Review." + rv.id, objs)"""
+        self.assertIn("Review." + rv.id, objs)
 
     def test_reload_with_arg(self):
         with self.assertRaises(TypeError):

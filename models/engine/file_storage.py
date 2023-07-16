@@ -11,6 +11,7 @@ from models.state import State
 from models.amenity import Amenity
 from models.review import Review
 from models.place import Place
+from models.city import City
 
 
 class FileStorage:
@@ -25,7 +26,8 @@ class FileStorage:
     class_dict = {
             "BaseModel": BaseModel, "User": User,
             "State": State, "Amenity": Amenity,
-            "Review": Review, "Place": Place
+            "Review": Review, "Place": Place,
+            "City": City
     }
 
     def all(self):

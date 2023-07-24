@@ -65,23 +65,6 @@
     box-sizing: border-box;
     }
 
-    ul li h2 {
-    left: 0;
-    margin: 0;
-    font-size: 16px;
-    }
-
-    ul {
-    list-style: none;
-    margin: 0;
-    }
-
-    .popover ul li {
-        margin: 10px;
-    }
-
-
-
     .locations:hover .popover,
     .amenities:hover .popover {
     display: block;
